@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SFC Create Product API</title>
+</head>
+<body>
+
+<h4>SFC Create Product API</h4>
+
+<form action="/create_product" method=post>
+    {{ form.csrf_token }}
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>Field Name</th>
+                <th>Field Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for field in form %}
+                <tr>
+                    <td>{{ field.label }}</td>
+                    <td>{{ field }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <input type="submit" title="Create">
+</form>
+
+</body>
+</html>
