@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SFC Create Product API</title>
+    <title>SFC Create Order API</title>
 </head>
 <body>
 
-<h4>SFC Create Product API</h4>
+<h4>SFC Create Order API</h4>
 
-<form action="/create_product" method=post>
+<form action="/create_order" method=post>
     {% if res %}
         <h5>{{ res }}</h5>
     {% endif %}
-    {{ form.csrf_token }}
+    {{ form_master.csrf_token }}
     <div>
         <table>
             <thead>
@@ -22,7 +22,14 @@
             </tr>
             </thead>
             <tbody>
-            {% for field in form %}
+            {% for field in form_master %}
+                <tr>
+                    <td>{{ field.label }}{% if field.flags.required %}*{% endif %}</td>
+                    <td>{{ field }}</td>
+                </tr>
+            {% endfor %}
+
+            {% for field in form_detail %}
                 <tr>
                     <td>{{ field.label }}</td>
                     <td>{{ field }}</td>
