@@ -6,7 +6,7 @@ FLask WTFForms for testing SFCAPI
 
 from flask_wtf import FlaskForm
 
-from wtforms import StringField, IntegerField, validators, FloatField
+from wtforms import StringField, IntegerField, validators, FloatField, FormField
 
 
 class SFCCreateProduct(FlaskForm):
@@ -35,6 +35,17 @@ class SFCCreateProduct(FlaskForm):
     productBrand = StringField('productBrand')
     productBrandName = StringField('productBrandName')
 
+class SFCOrderDetail(FlaskForm):
+    sku = StringField('Product ID', [validators.DataRequired(), validators.Length(max=16)])
+    quantity = IntegerField('Quantity', [validators.DataRequired()])
+    isQC = IntegerField('isQC')
+    priorityLevel = IntegerField('priorityLevel')
+    opDescription = StringField('Product Description', [validators.DataRequired(), validators.Length(max=200)])
+    cnDescription = StringField('Product Chinese Description', [validators.DataRequired(), validators.Length(max=200)])
+    supplierCode = StringField('supplierCode')
+    unitPrice = StringField('unitPrice')
+    barCode = StringField('barCode')
+
 
 class SFCCreateOrder(FlaskForm):
     referenceNo = StringField(u'User’s Reference Number', [validators.DataRequired(), validators.Length(max=32)])
@@ -60,15 +71,11 @@ class SFCCreateOrder(FlaskForm):
     payBy = IntegerField('Pay By 0=Receiver; 1=Sender (For domestic order only)')
 
 
-class SFCOrderDetail(FlaskForm):
-    sku = StringField('Product ID', [validators.DataRequired(), validators.Length(max=16)])
-    quantity = IntegerField('Quantity', [validators.DataRequired()])
-    isQC = IntegerField('isQC')
-    priorityLevel = IntegerField('priorityLevel')
-    opDescription = StringField('Product Description', [validators.DataRequired(), validators.Length(max=200)])
-    cnDescription = StringField('Product Chinese Description', [validators.DataRequired(), validators.Length(max=200)])
-    supplierCode = StringField('supplierCode')
-    unitPrice = StringField('unitPrice')
-    barCode = StringField('barCode')
-
-
+class SFCASNInfo(FlaskForm):
+    referenceNo = StringField(u'User’s Reference Number', [validators.Length(max=32)])
+    trackingNumber = StringField('Tracking Number', [validators.Length(max=32)])
+    ASNType = IntegerField('ASN Type: 1 = Standard; 2 = Special; 3 = Return', [validators.DataRequired()])
+    instructions = StringField('Remarks', [validators.Length(max=32)])
+    contact = StringField('Contact Name', [validators.Length(max=20)])
+    contactMobile = StringField('Contact Phone', [validators.Length(max=20)])
+    warehouseId = IntegerField('Warehouse ID. Default is 1. Refer to getWarehouse for details')

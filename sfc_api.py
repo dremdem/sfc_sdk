@@ -49,3 +49,39 @@ class SFCAPI(object):
         order_detail = self.factory.orderDetail(_value_1=[p_order_detail])
         order_info['orderDetail'] = order_detail
         return self.client.service.createOrder(HeaderRequest=self.header_request, orderInfo=order_info)
+
+    def get_shipping_methods(self):
+        """
+        Get shipping method list
+        :return: 
+        """
+
+        return self.client.service.getShippingMethod(HeaderRequest=self.header_request)
+
+    def get_countries(self):
+        """
+        Get country list         
+        :return: 
+        """
+
+        return self.client.service.getCountry(HeaderRequest=self.header_request)
+
+    def get_warehouses(self):
+        """
+        Get warehouses list
+        :return: 
+        """
+
+        return self.client.service.getWarehouse(HeaderRequest=self.header_request)
+
+    def create_asn(self, p_asn_info, p_order_detail):
+        """
+        create ASN
+        :param asn_info: 
+        :return: 
+        """
+        asn_info = p_asn_info
+        order_detail = self.factory.orderDetail(_value_1=[p_order_detail])
+        asn_info['ASNDetail'] = order_detail
+
+        return self.client.service.createASN(HeaderRequest=self.header_request, ASNInfo=asn_info)

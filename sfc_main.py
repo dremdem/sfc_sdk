@@ -12,7 +12,7 @@ from flask_wtf.csrf import CSRFProtect
 
 from werkzeug.datastructures import MultiDict
 
-from forms import SFCCreateOrder, SFCCreateProduct, SFCOrderDetail
+from forms import SFCCreateOrder, SFCCreateProduct, SFCOrderDetail, SFCASNInfo
 from sfc_api import SFCAPI
 
 app = Flask(__name__)
@@ -62,6 +62,22 @@ def create_order():
         form_order_detail = SFCOrderDetail()
     return render_template('create_order.html', form_master=form_order, form_detail=form_order_detail, res=res)
 
+
+@app.route("/create_asn", methods=['GET', 'POST'])
+def create_asn():
+    res = None
+    if request.method == 'POST':
+        asn_info = {k: v for k, v in request.form.items() if k in
+                      [i for i in SFCASNInfo.__dict__.keys() if i[0] != '_']}
+        order_detail = {k: v for k, v in request.form.items() if
+                        k in [i for i in SFCOrderDetail.__dict__.keys() if i[0] != '_']}
+        form_asn = SFCASNInfo(MultiDict(asn_info))
+        form_order_detail = SFCOrderDetail(MultiDict(order_detail))
+        res = sfcapi.create_asn(p_asn_info=asn_info, p_order_detail=order_detail)
+    else:
+        form_asn = SFCASNInfo()
+        form_order_detail = SFCOrderDetail()
+    return render_template('create_asn.html', form_master=form_asn, form_detail=form_order_detail, res=res)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
