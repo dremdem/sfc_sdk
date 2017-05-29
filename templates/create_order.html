@@ -14,6 +14,7 @@
     {% endif %}
     {{ form_master.csrf_token }}
     <div>
+        <h4>Order info:</h4>
         <table>
             <thead>
             <tr>
@@ -24,13 +25,6 @@
             <tbody>
             {% for field in form_master %}
                 <tr>
-                    <td>{{ field.label }}{% if field.flags.required %}*{% endif %}</td>
-                    <td>{{ field }}</td>
-                </tr>
-            {% endfor %}
-
-            {% for field in form_detail %}
-                <tr>
                     <td>{{ field.label }}</td>
                     <td>{{ field }}</td>
                 </tr>
@@ -38,6 +32,29 @@
             </tbody>
         </table>
     </div>
+{#    <div>#}
+{#        <h4>Order details:</h4>#}
+{#        <table>#}
+{#            <thead>#}
+{#            <tr>#}
+{#                {% for field in form_master.details[0] %}#}
+{#                    <th>{{ field.label }}</th>#}
+{#                {% endfor %}#}
+{#            </tr>#}
+{#            </thead>#}
+{#            <tbody>#}
+{#                {% for d in form_master.details %}#}
+{#                <tr>#}
+{#                    {% for field in d %}#}
+{#                        <td>{{ field.data }}</td>#}
+{#                    {% endfor %}#}
+{#                </tr>#}
+{#                {% endfor %}#}
+{#            </tbody>#}
+{#        </table>#}
+{#    </div>#}
+
+
     <input type="submit" title="Create">
 </form>
 

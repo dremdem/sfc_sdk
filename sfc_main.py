@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Testing module from creating product using 
+Testing module for creating product using 
 http://www.sendfromchina.com/default/index/webservice
-
-
 """
 
 from flask import Flask, render_template, request
@@ -52,14 +50,44 @@ def create_order():
     if request.method == 'POST':
         order_info = {k: v for k, v in request.form.items() if k in
                       [i for i in SFCCreateOrder.__dict__.keys() if i[0] != '_']}
+
+        order_detail= []
+
+        order_detail.append({k.strip('detail1-'): v for k, v in request.form.items() if
+                        k.startswith('detail1') and k != 'detail1-csrf_token' })
+        order_detail.append({k.strip('detail2-'): v for k, v in request.form.items() if
+                        k.startswith('detail2') and k != 'detail2-csrf_token' })
+        order_detail.append({k.strip('detail3-'): v for k, v in request.form.items() if
+                        k.startswith('detail3') and k != 'detail3-csrf_token' })
+
+        res = sfcapi.create_order(p_order_info=order_info, p_order_detail=order_detail)
+        form_order = SFCCreateOrder(MultiDict(order_info))
+        form_order.detail1 = SFCOrderDetail(MultiDict(order_detail[0]))
+        form_order.detail2 = SFCOrderDetail(MultiDict(order_detail[1]))
+        form_order.detail3 = SFCOrderDetail(MultiDict(order_detail[2]))
+    else:
+        form_order = SFCCreateOrder()
+        # init 3 test order detail elements
+        form_order.detail1 = SFCOrderDetail()
+        form_order.detail2 = SFCOrderDetail()
+        form_order.detail3 = SFCOrderDetail()
+
+    return render_template('create_order.html', form_master=form_order, res=res)
+
+
+@app.route("/create_asn", methods=['GET', 'POST'])
+def create_asn():
+    res = None
+    if request.method == 'POST':
+        order_info = {k: v for k, v in request.form.items() if k in
+                      [i for i in SFCCreateOrder.__dict__.keys() if i[0] != '_']}
         order_detail = {k: v for k, v in request.form.items() if
                         k in [i for i in SFCOrderDetail.__dict__.keys() if i[0] != '_']}
         res = sfcapi.create_order(p_order_info=order_info, p_order_detail=order_detail)
         form_order = SFCCreateOrder(MultiDict(order_info))
         form_order_detail = SFCOrderDetail(MultiDict(order_detail))
     else:
-        form_order = SFCCreateOrder()
-        form_order_detail = SFCOrderDetail()
+        form_order = SFCCreateASN()
     return render_template('create_order.html', form_master=form_order, form_detail=form_order_detail, res=res)
 
 
