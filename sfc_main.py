@@ -12,7 +12,7 @@ from flask_wtf.csrf import CSRFProtect
 
 from werkzeug.datastructures import MultiDict
 
-from forms import SFCCreateOrder, SFCCreateProduct, SFCOrderDetail, SFCASNInfo
+from forms import SFCCreateOrder, SFCCreateProduct, SFCOrderDetail, SFCASNInfo, SFCgetOrderByCode
 from sfc_api import SFCAPI
 
 app = Flask(__name__)
@@ -68,7 +68,7 @@ def create_asn():
     res = None
     if request.method == 'POST':
         asn_info = {k: v for k, v in request.form.items() if k in
-                      [i for i in SFCASNInfo.__dict__.keys() if i[0] != '_']}
+                    [i for i in SFCASNInfo.__dict__.keys() if i[0] != '_']}
         order_detail = {k: v for k, v in request.form.items() if
                         k in [i for i in SFCOrderDetail.__dict__.keys() if i[0] != '_']}
         form_asn = SFCASNInfo(MultiDict(asn_info))
@@ -78,6 +78,21 @@ def create_asn():
         form_asn = SFCASNInfo()
         form_order_detail = SFCOrderDetail()
     return render_template('create_asn.html', form_master=form_asn, form_detail=form_order_detail, res=res)
+
+
+@app.route("/get_order_by_code", methods=['GET', 'POST'])
+def get_order():
+    res = None
+
+    if request.method == 'POST':
+        res = sfcapi.get_order_by_code(order_code=request.form['ordersCode'], detail_level=request.form['detailLevel'])
+        form_get_order = SFCgetOrderByCode(
+            MultiDict({'ordersCode': request.form['ordersCode'], 'detailLevel': request.form['detailLevel']}))
+    else:
+        form_get_order = SFCgetOrderByCode()
+
+    return render_template('get_order_by_code.html', form=form_get_order, res=res)
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)

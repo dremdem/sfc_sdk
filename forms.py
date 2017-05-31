@@ -79,3 +79,9 @@ class SFCASNInfo(FlaskForm):
     contact = StringField('Contact Name', [validators.Length(max=20)])
     contactMobile = StringField('Contact Phone', [validators.Length(max=20)])
     warehouseId = IntegerField('Warehouse ID. Default is 1. Refer to getWarehouse for details')
+
+
+class SFCgetOrderByCode(FlaskForm):
+    ordersCode = StringField(u'SFC Order ID', [validators.DataRequired(), validators.Length(20)])
+    detailLevel = IntegerField(u'0 = Brief Info; 1 = Detailed Info', [validators.DataRequired()])
+

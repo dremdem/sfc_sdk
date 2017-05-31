@@ -47,8 +47,20 @@ class SFCAPI(object):
         """
         order_info = p_order_info
         order_detail = self.factory.orderDetail(_value_1=[p_order_detail])
+        # order_detail = self.factory.orderDetail(_value_1=[p_order_detail, p_order_detail])
         order_info['orderDetail'] = order_detail
         return self.client.service.createOrder(HeaderRequest=self.header_request, orderInfo=order_info)
+
+    def get_order_by_code(self, order_code, detail_level=0):
+        """
+        Get order info by order code
+        :param order_code: SFC Order ID
+        :param detail_level: 0 = Brief Info; 1 = Detailed Info
+        :return: 
+        """
+
+        return self.client.service.getOrderByCode(HeaderRequest=self.header_request, ordersCode=order_code,
+                                                  detailLevel=detail_level)
 
     def get_shipping_methods(self):
         """

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SFC Get order by code</title>
+</head>
+<body>
+
+<h4>SFC Get order by code</h4>
+
+<form action="/get_order_by_code" method="post">
+    {% if res %}
+        <h5>{{ res }}</h5>
+    {% endif %}
+    {{ form.csrf_token }}
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>Field Name</th>
+                <th>Field Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for field in form %}
+                <tr>
+                    <td>{{ field.label }}</td>
+                    <td>{{ field }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <input type="submit" title="Create">
+</form>
+
+
+</body>
+</html>
